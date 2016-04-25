@@ -2,25 +2,25 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: http://mazhuang.org
+url: http://https://github.com/Lzpgithub/Lzpgithub.github.io
 date_format: "ordinal"
-title: 码志
-subtitle: "打码改变人生"
-description: "马壮的个人博客"
-keywords: 码志, Zhuang Ma, mzlogin, mazhuang
+title: Aris
+subtitle: "海阔凭鱼跃   天高任鸟飞"
+description: "欢迎来到Aris个人博客"
+keywords: Aris, Lzpgithub
 favicon: /favicon.ico
 timezone: Asia/Shanghai
 encoding: "utf-8"
-source_code: https://github.com/mzlogin/mzlogin.github.io
+source_code: https://github.com/Lzpgithub/Lzpgithub.github.io
 
 # ---------------- #
 #      Author      #
 # ---------------- #
-author: Zhuang Ma
+author: ZiPeng Lu
 organization: Sogou, Inc.
 organization_url: https://www.sogou.com
-location: Beijing, China
-email: chumpma@gmail.com
+location: LiaoNing, China
+email: 1317343152@qq.com
 
 # ---------------- #
 #    Navigation    #
@@ -36,7 +36,7 @@ navs:
 
   -
     href: /wiki/
-    label: 维基
+    label: 面试和在线编程
 
   -
     href: /links/
@@ -69,7 +69,6 @@ gems:
     - jekyll-paginate
     - jekyll-sitemap
     - jekyll-feed
-    - jemoji
 #     - jekyll-mentions
 collections:
     wiki:
@@ -79,12 +78,10 @@ collections:
 # ---------------- #
 #      Socials     #
 # ---------------- #
-github_username: mzlogin
+github_username: Lzpgithub
 douban_username: freedim
-facebook_username: mzlogin
-weibo_username: mzlogin
-zhihu_username: mzlogin
-twitter_username: mzlogin
+facebook_username: Luzipeng
+weibo_username: Aris
 
 # ---------------- #
 #      Comments    #
@@ -93,14 +90,14 @@ twitter_username: mzlogin
 comments_provider: disqus
 # !!!重要!!! 请修改下面两个用户名为你自己申请的
 # !!!Important!!! Please modify usernames below to yours
-duoshuo_username: mazhuang
-disqus_username: mzlogin
+duoshuo_username: Lzpgithub
+disqus_username: Lzpgithub
 
 # ---------------- #
 #      Datas       #
 # ---------------- #
-skill_software_keywords: [Java, C++, Python, Design Patterns]
-skill_mobile_app_keywords: [Android, Reverse Engineering]
-skill_windows_keywords: [Win32 SDK, DuiLib, WTL, COM, WinDbg]
-popular_repos: ['chinese-copywriting-guidelines','android-reverse-engineering', 'csdncommenter', 'mzlogin.github.io', 'vim-markdown-toc']
+skill_software_keywords: [C, C++]
+skill_mobile_app_keywords: [Android]
+skill_windows_keywords: [Win32 SDK,QT,MFC]
+popular_repos: ['chinese-copywriting-guidelines','android-reverse-engineering', 'csdncommenter', 'Lzpgithub.github.io', 'vim-markdown-toc']
 contribute_repos: ['sparanoid/chinese-copywriting-guidelines', 'waylife/RentCrawer']

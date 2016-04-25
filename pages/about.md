@@ -1,30 +1,29 @@
 ---
 layout: page
 title: About
-description: 打码改变世界
-keywords: Zhuang Ma, 马壮
+description: 
+keywords: Lzpgithub
 comments: true
 menu: 关于
 permalink: /about/
 ---
 
-我是马壮，码而生，码而立。
+海阔凭鱼跃
 
-仰慕「优雅编码的艺术」。
+天高任鸟飞
 
 ## 坚信
 
-* 熟能生巧
-* 努力改变人生
+* 科技创造未来
+* 编程改变世界
 
 ## 联系
 
-* GitHub：[@mzlogin](https://github.com/mzlogin)
-* LinkedIn：[@mazhuang](https://www.linkedin.com/in/mazhuang)
+* GitHub：[@Lzpgithub](https://github.com/Lzpgithub)
 * 博客：[{{ site.title }}]({{ site.url }})
-* 微博: [@mzlogin](http://weibo.com/mzlogin)
-* 知乎: [@mzlogin](http://www.zhihu.com/people/mzlogin)
-* 豆瓣: [@壮哥不胖](http://www.douban.com/people/freedim)
+* 微博: [@Arislzp](http://weibo.com/Arislzp)
+* QQ邮箱: [@Aris 1317343152@qq.com]()
+
 
 ## Skill Keywords
 
