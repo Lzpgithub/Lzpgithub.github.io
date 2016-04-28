@@ -8,6 +8,8 @@ keywords:  图像处理, 软件, MFC
 
 本项目是在MFC平台上编写C++代码来开发一个集成各种图像处理算法的软件，主要对位图图像进行处理。
 
+
+
 ##### 基于对话框打开读入图片
 
 首先是创建一个基于对话框的应用程序，添加图像控件进行显示图像，图像控件ID为IDC_PICTURE。在工程中创建对位图处理的基本文件，里面声明类ImageDib，集成了对位图结构定义和基本操作，包括图像数据、图像颜色表	、图像的宽(像素为单位)、图像的高(像素为单位)、图像信息头等等。
@@ -50,7 +52,7 @@ class ImageDib
 
 在ImgProSorltDlg.h头文件中添加：#include "ImageDib.h"，同时在类CImgProSorltDlg中声明ImageDib对象m_dib，以后在类CImgProSorltDlg中读入的位图数据就存到对象m_dib中，因此还需要在类CImgProSorltDlg的构造函数中进行初始化：m_dib=new ImageDib();
 
-然后在对话框中创建菜单栏，在菜单栏中添加“打开”按钮。菜单ID为IDR_MENU，给菜单添加事件处理函数，函数名为OnOpenFile()。在函数中添加如下代码：
+然后在对话框中创建菜单栏，菜单栏ID为IDR_MENU，在菜单栏中添加“打开”按钮。给菜单添加事件处理函数，函数名为OnOpenFile()。在函数中添加如下代码：
 
 ```cpp
 void CImgProSorltDlg::OnOpenFile()
@@ -84,6 +86,65 @@ void CImgProSorltDlg::OnOpenFile()
     }
 }
 ```
-运行效果如下：
+
+在菜单栏中添加“保存”按钮。给菜单添加事件处理函数，函数名为OnSaveFile()。在函数中添加如下代码：
+
+```cpp
+void CImgProSorltDlg::OnSaveFile()
+{
+	// TODO: 在此添加命令处理程序代码
+	CString filter = _T("图像 (*.bmp;*.tif;*.jpg)|*.bmp;*.tif;*.jpg|All Files (*.*)|*.*||");
+	CFileDialog fdlg(false,NULL,NULL,OFN_HIDEREADONLY |OFN_OVERWRITEPROMPT,filter);           //文件对话框
+	fdlg.m_ofn.lpstrInitialDir = L"d:\\";                                                     //设置初始目录文件
+	if(fdlg.DoModal() == IDOK)
+	{
+		CString fileName = fdlg.GetPathName();//得到保存文件的路径
+		LPCTSTR lpszPathName;
+		lpszPathName=fileName;           //文件路径CString由转换为LPCTSTR
+		m_dib->Write(lpszPathName);
+	}
+}
+```
+
+如此软件就具备了打开图像和保存图像的功能，运行效果如下(软件的主窗口)：
 
 ![](/images/posts/Projection/1.png)
+
+
+
+#### 图像的几何变换
+
+这一节主要是给软件添加给图片进行几何变换的功能，在主窗口上添加“几何变换”菜单列。编写类GeometryTrans，负责对位图图像进行几何变换处理，该类集成在文件GeometryTrans.cpp和GeometryTrans.h中，因此需要在ImgProSorltDlg.cpp头文件中添加：#include "GeometryTrans.h"。主要添加功能包括：平移、水平镜像、垂直镜像、缩放、旋转(顺时针旋转90度，逆时针旋转90度，旋转180度，任意角度旋转)。在几何变换菜单列中添加相关菜单和事件处理函数。
+
+首先是添加“平移”菜单，然后添加事件处理函数OnMove()。平移操作需要获取水平移动距离和垂直移动距离，我设计在点击平移菜单以后，弹出一个处理框来获取这两个参数，对话框ID为IDD_DLG_MOVE，同时要给对话框添加类GeometryMoveDlg，基类为CDialog。
+
+![](/images/posts/Projection/2.png)
+
+添加水平镜像菜单和事件处理函数OnHorizontalMirror()：
+
+![](/images/posts/Projection/3.png)
+
+添加垂直镜像菜单和事件处理函数OnHorizontalMirror()：
+
+![](/images/posts/Projection/4.png)
+
+添加缩放菜单和事件处理函数OnZoom()，同时需要添加对话框获取水平缩放参数和垂直缩放参数，对话框ID为IDD_DIALOG_ZOOM。
+
+![](/images/posts/Projection/5.png)
+
+添加旋转菜单和各个时间处理函数OnClockwise90(),OnAnticlockwise90(),OnRotate180()OnFreeRotate()，在任意角度时，需要添加对话框获取角度参数，对话框ID为IDD_DIALOG_Rotate。
+
+![](/images/posts/Projection/6.png)
+
+至此，图像处理软件的几何变换部分的功能已经添加完成，运行效果如下：
+
+![](/images/posts/Projection/7.png)
+
+
+#### 图像的灰度变换
+有几何变换以后，开始给软件添加灰度变换部分的功能，主要是图像二值化，图像直方图，直方图均衡化，灰度反转，阈值变换，窗口变换，分段线性拉伸等等。灰度变换处理类是GrayTrans，在文件GrayTrans.cpp和GrayTrans.h。
+
+首先是二值化菜单事件处理函数OnBinary()。
+
+![](/images/posts/Projection/8.png)
+
