@@ -148,3 +148,42 @@ void CImgProSorltDlg::OnSaveFile()
 
 ![](/images/posts/Projection/8.png)
 
+直方图菜单主要是弹出对话框IDD_DIALOG_Histogram，显示图像的直方图，对话框类为HistogramDrawDlg，通过类向导给对话框类添加虚函数OnInitDialog()和消息OnPaint()并添加相关代码，则运行结果如下：
+
+![](/images/posts/Projection/13.png)
+
+构造函数是在c++类创建时首先运行的函数，主要是针对C++类对象的成员变量的初始化，是内在的。而OnInitDialog是主要针对与类对象相关的windows窗体控件初始化问题，是外在的。可以看出，构造函数是在窗体创建之前进行的，而OnInitDialog是在窗体创建完成后进行的。OnCreate是对话框在被创建时的消息，这时候对话框还没有被显示在屏幕上。而且对话框中的控件都还没有被创建。而OnInitDialog()是对话框创建完成，即对话框上的控件也全部被创建后第一次激活显示在屏幕上产生的消息。在此时可以对话框中的控件进行初始化操作
+
+添加直方图均衡化菜单OnHistgramAver()和反转菜单OnImageReverse()，添加阈值变换菜单OnImgThresh()也要弹出对话框IDD_DLG_THRESH：
+
+![](/images/posts/Projection/14.png)
+
+窗口变换菜单OnThresholdWindow()，弹出对话框IDD_Dlg_THRESHWD：
+
+![](/images/posts/Projection/15.png)
+
+软件运行效果如下：
+
+![](/images/posts/Projection/16.png)
+
+
+#### 图像空间域的增加
+
+这部分功能主要包括：高斯噪声，椒盐噪声，领域平均，中值平均，掩模平滑，梯度锐化，拉普拉斯锐化。处理空间域的文件是ImageEnhance.h和ImageEnhance.cpp，类是ImageEnhance。运行效果如下：
+
+![](/images/posts/Projection/17.png)
+
+
+#### 图像形态学
+
+本部分功能包括腐蚀，膨胀，开运算，闭运算，击中击不中细化，处理文件是Morphology.h和Morphology.cpp，类是Morphology，运行效果：
+
+![](/images/posts/Projection/18.png)
+
+
+#### 图像分割
+
+本部分功能包括自适应阈值分割，Robert算子，Sobel算子，Prewitt算子，Laplacian算子，边界跟踪，区域增长，处理文件是ImgSegment.h和ImgSegment.cpp，类是ImgSegment，运行效果：
+
+![](/images/posts/Projection/19.png)
+
