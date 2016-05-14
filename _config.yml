@@ -32,11 +32,11 @@ navs:
 
   -
     href: /categories/
-    label: 分类
+    label: 目录分类
 
   -
     href: /wiki/
-    label: 面试和在线编程
+    label: 在线编程
 
   -
     href: /links/
