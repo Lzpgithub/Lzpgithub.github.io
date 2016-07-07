@@ -180,7 +180,7 @@ int main(){
 
 程序运行结果：
 
-![](/images/posts/Cpoint/63.png)
+![](/images/posts/C++/63.png)
 
 
 ##### 35.比较分析两个代码段的输出--动态内存传递

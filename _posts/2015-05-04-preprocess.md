@@ -51,7 +51,7 @@ int main(){
 
 输出结果如下：
 
-![](/images/posts/Cpoint/33.png)
+![](/images/posts/C++/33.png)
 
 #### 宏定义
 

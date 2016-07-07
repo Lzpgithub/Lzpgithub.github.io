@@ -82,7 +82,7 @@ int main(){
 
 程序运行结果：
 
-![](/images/posts/Cpoint/62.png)
+![](/images/posts/C++/62.png)
 
 可以看出函数UseMallocFree()执行时，类Obj的构造函数和析构函数都不会被调用，而函数UseNewDelete()执行时，类Obj的构造函数和析构函数会被调用。
 

@@ -68,7 +68,7 @@ int main(){
 
 程序运行结果：
 
-![](/images/posts/Cpoint/60.png)
+![](/images/posts/C++/60.png)
 
 
 ##### 找错--指针数组和数组指针的使用
