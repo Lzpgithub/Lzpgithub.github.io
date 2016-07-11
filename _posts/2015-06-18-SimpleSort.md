@@ -179,10 +179,128 @@ int main(){
 而对于交换次数而言，当最好的时候，交换次数为0次，最差的时候，也就是初始降序时，交换次数为n-1次，基于最终的排序时间是比较与交换的次数总和，因此，总的时间复杂度依然为O(n2)。尽管和冒泡排序算法时间复杂度相同，但是简单选择排序的性能还是略优于冒泡排序。
 
 
+#### 直接插入排序
+
+直接插入排序（Straight Insertion Sort）的基本操作是将一个记录插入到已经排序号的有序表中，从而得到一个新的、记录数增1的有序表。
+
+代码实现：
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+#define MAXSIZE 10                  //用于排序数组个数最大值 可根据需要修改
+typedef struct{
+	int r[MAXSIZE];                 //数组
+	int lengh;                      //数组的实际长度
+}SqList;
+
+void swap(SqList *L,int i,int j){   //对数组的交换操作
+	int temp=L->r[i];
+	L->r[i]=L->r[j];
+	L->r[j]=temp;
+}
+
+void print(SqList *L){
+	for(int i=0;i<L->lengh;i++){
+		cout<<L->r[i]<<" ";
+	}
+	cout<<endl;
+}
 
 
+void InsertSort(SqList *L){
+	for(int i=1;i<L->lengh;i++){
+		int j=i;
+		while(j>=1){
+			if(L->r[j]>=L->r[j-1]){   //退出循环
+				break;
+			}else{
+				swap(L,j,j-1);        //往前进行比较 不断进行交换后 
+			}
+			j--;
+		}
+	}
+}
+
+void InsertSort2(SqList *L){
+	for(int i=1;i<L->lengh;i++){
+		int j=i;
+		while(j>=1){
+			if(L->r[i]>=L->r[j-1]){   //退出循环
+				break;
+			}
+			j--;
+		}
+		int temp=L->r[i];             //保存要插入的值
+		for(int x=i;x>j;x--){         //每个数据都往后退
+			L->r[x]=L->r[x-1];
+		}
+		L->r[j]=temp;                 //插入值
+	}
+}
+
+int main(){
+	SqList *L=(SqList*)malloc(sizeof(SqList));
+	L->lengh=5;
+	L->r[0]=5;
+	L->r[1]=2;
+	L->r[2]=4;
+	L->r[3]=7;
+	L->r[4]=3;
+	print(L);
+	InsertSort2(L);
+	print(L);
+	system("pause");
+}
+```
+
+直接插入排序算法复杂度分析：
+
+从空间上来看，它只需需要一个记录的付诸空间，因此，关键是看它的时间复杂度。
+
+当最好的情况，也就是要排序的表本身就是有序的，比如{2,3,4,5,6}
+
+首先是比较次数：
+
+3比较1次
+
+4比较1次
+
+5比较1次
+
+6比较1次
+
+所以一共比较n-1次，移动次数为0次，时间复杂度为O(n)。
+
+最坏的情况是完全逆序：如{6,5,4,3,2}
+
+首先是比较次数：
+
+5比较1次
+
+4比较2次
+
+3比较3次
+
+2比较4次
+
+因此比较次数一共为：**1+2+3+...+n-1=n\*(n-1)/2次**
+
+然后是交换次数（包括中间值交换）：
+
+5：首先5赋值给中间值一次，6往后推一次，插入一次，共3次
+
+4：首先4赋值给中间值一次，5、6往后推各一次，插入一次，共4次
+
+3：共5次
+
+2：共6次
+
+一共交换次数为：**3+4+...n+1=(n+4)\*(n-1)/2**
+
+因此直接插入排序的时间复杂度为O(n)。
 
 
-
-![](/images/posts/Datastructure/14.png)
 

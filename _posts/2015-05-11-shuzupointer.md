@@ -93,5 +93,5 @@ int main(){
 
 程序运行效果：
 
-![](/images/posts/Cpoint/61.png)
+![](/images/posts/C++/61.png)
 
