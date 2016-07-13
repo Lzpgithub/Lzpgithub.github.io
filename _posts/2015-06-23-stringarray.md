@@ -813,3 +813,223 @@ int main(){
 程序运行结果：
 
 ![](/images/posts/C++/82.png)
+
+
+##### 22.编程实现任意长度的两个正整数相加
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	char num1[100]="92345";
+	char num2[100]="9341";
+
+	int len1=0;                           //计算字符num1的长度
+	while(num1[len1]!='\0')
+		len1++;
+
+	int len2=0;                           //计算字符num2的长度
+	while(num2[len2]!='\0')
+		len2++;
+
+	int jinwei=0;
+	int c=1;
+	if(len1>=len2){                       //如果字符串num1大于等于num2
+		for(int i=0;i<len1;i++){
+			if(c<=len2){                  //首先判断没有超过len2的长度
+				int temp=num1[len1-c]-'0'+num2[len2-c]-'0';
+				temp=temp+jinwei;         //加上进位
+				num1[len1-c]=temp%10+'0';
+				if(temp>=10)              //判断下一个是否有进位
+					jinwei=1;
+				else
+					jinwei=0;
+			}else{                        //判断超过len2的长度
+				int temp=num1[len1-c]-'0'+jinwei;
+				num1[len1-c]=temp%10+'0';
+				if(temp>=10)
+					jinwei=1;
+				else
+					jinwei=0;
+			}
+			c++;
+		}
+
+		if(jinwei){                      //判断最后一位没有溢出
+			for(int i=len1;i>=0;i--)
+				num1[i+1]=num1[i];
+			num1[0]='1';
+		}
+		cout<<num1<<endl;
+	}else{                              //如果字符串num2大于等于num1
+			for(int i=0;i<len2;i++){
+			if(c<=len1){                //首先判断没有超过len1的长度
+				int temp=num1[len1-c]-'0'+num2[len2-c]-'0';
+				temp=temp+jinwei;       //加上进位
+				num2[len2-c]=temp%10+'0';
+				if(temp>=10)            //判断下一个是否有进位
+					jinwei=1;
+				else
+					jinwei=0;
+			}else{                      //判断超过len1的长度
+				int temp=num2[len2-c]-'0'+jinwei;
+				num2[len2-c]=temp%10+'0';
+				if(temp>=10)
+					jinwei=1;
+				else
+					jinwei=0;
+			}
+			c++;
+		}
+
+		if(jinwei){                     //判断最后一位没有溢出
+			for(int i=len2;i>=0;i--)
+				num2[i+1]=num2[i];
+			num2[0]='1';
+		}
+		cout<<num2<<endl;
+	}
+
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/83.png)
+
+
+##### 23.编程实现字符串循环右移
+
+编写的函数能把字符串循环右移n位。例如字符串“abcdefghi”，如果n=2，移位后是“hiabcdefgh”。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void loopMove(char *str,int n){
+	int len=0;
+	while(str[len]!='\0')
+		len++;
+	char *newstr=(char*)malloc((len+1)*sizeof(char));
+	newstr[len]='\0';
+	for(int i=0;i<len;i++){
+		int temp=(i+n)%len;
+		newstr[temp]=str[i];
+	}
+	cout<<newstr<<endl;
+	free(newstr);
+}
+
+int main(){
+	char str[]="123456789";
+	int n=6;
+	loopMove(str,n);
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/84.png)
+
+
+##### 24.从字符串的指定位置开始，删除其指定长度字符
+
+假设一个字符串“abcdefg”，从第二个字符开始（索引为1），删除两个字符，删除后的字符串是“adefg”。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void deleteChars(char *str,int pos,int len){
+	int c=0;
+	while(str[c]!='\0')               //求字符串的长度
+		c++;
+
+	int size=c-len+1;                 //申请新的内存空间
+	char *newstr=(char*)malloc(size*sizeof(char));
+
+	int m=0;                          
+	for(int i=0;i<pos-1;i++){         //复制前段字符
+		newstr[m]=str[i];
+		m++;
+	}
+
+	for(int i=pos+len-1;i<=c;i++){    //复制后段字符
+		newstr[m]=str[i];
+		m++;
+	}
+	cout<<newstr<<endl;
+	free(newstr);
+}
+
+int main(){
+	char str[]="abcdefg";
+	int pos=2;
+	int len=2;
+	deleteChars(str,pos,len);
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/85.png)
+
+
+##### 25字符串的排序以及交换
+
+编写一个函数，首先将一条字符串分成两部分，前半部分按ASCII码升序排序，后半部分不变（如果字符串是奇数则中间的字符不变），其次将前后两部分交换，最后输出该字符串。测试字符串“ADZDDJKJFIEJHGI”。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void foo(char *str){
+	int len=0;
+	while(str[len]!='\0')                //获取字符串的长度
+		len++;
+
+	int halflen=len/2;
+	for(int i=0;i<halflen-1;i++){        //简单选择排序
+		int min=0;
+		char minchar=str[i];
+		for(int j=i+1;j<halflen;j++){
+			if(minchar>str[j]){
+				min=j;
+				minchar=str[j];
+			}
+
+		}
+		if(min!=0){                      //交换
+			char temp=str[i];
+			str[i]=str[min];
+			str[min]=temp;
+		}
+	}
+
+	for(int i=0;i<halflen;i++){          //交换
+		char temp=str[i];
+		str[i]=str[len-halflen+i];
+		str[len-halflen+i]=temp;
+	}
+	cout<<str<<endl;
+}
+
+int main(){
+	char str[]="ADZDDJKJFIEJHGI";
+	foo(str);
+
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/86.png)
