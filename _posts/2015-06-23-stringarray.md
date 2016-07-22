@@ -1033,3 +1033,228 @@ int main(){
 程序运行结果：
 
 ![](/images/posts/C++/86.png)
+
+
+##### 26.编程实现删除字符串中所有指定的字符
+
+假设字符串为“cabcdefcgchci”，把该字符串中所有的字符“c”删除掉后，那么结果应该是“abdefghi”。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void deleteChar(char *str,char c){
+	int l=0,len=0;
+	while(str[l]!='\0'){           //求出长度
+		if(str[l]!=c)
+			len++;
+		l++;
+	}
+
+	char *newchar=(char*)malloc((len+1)*sizeof(char));
+	len=0;
+	for(int i=0;i<l;i++){
+		if(str[i]!=c){
+			newchar[len]=str[i];
+			len++;
+		}
+	}
+	newchar[len]='\0';
+	cout<<newchar<<endl;
+	free(newchar);
+}
+
+int main(){
+	char str[]="cabcdefcgchci";
+	deleteChar(str,'c');
+	system("pause");
+}
+```
+
+
+##### 27.使用strcat连接字符串
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	char *str1="hello";
+	char *str2=" china";
+	char *str3=NULL;
+	str3=new char(strlen(str1)+strlen(str2)+1);   //分配堆内存
+	str3[0]='\0';          //str3[0]赋为结束符'\0' 以便strcat能正常使用 应为strcat只对字符串操作
+	strcat(str3,str1);  //str3便为"hello"
+	strcat(str3,str2);  //str3变为"hello china"
+	cout<<str3<<endl;
+
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/87.png)
+
+
+##### 28.编程实现库函数strcat
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void Mystrcat(char *str1,const char *str2){
+	int pos=0;
+	while(str1[pos]!='\0')       //定位字符串str1的末尾
+		pos++;
+
+	int len=0;                   //计算字符串str2的长度
+	while(str2[len]!='\0')
+		len++;
+
+	for(int i=0;i<=len;i++){
+		str1[pos+i]=str2[i];
+	}
+	cout<<str1<<endl;
+}
+
+int main(){
+	char *str1="hello";
+	char *str2=" china";
+	char *str3=NULL;
+	str3=new char(strlen(str1)+strlen(str2)+1);   //分配堆内存
+	str3[0]='\0';         
+	Mystrcat(str3,str1);
+	Mystrcat(str3,str2);
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/88.png)
+
+
+##### 30.找出01字符串中0和1连续出现的最大次数
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void Calculate(const char *str,int &max0,int &max1){
+	int len=0;
+	while(str[len]!='\0')           //求出字符串长度
+		len++;
+
+	int c0=0;
+	int c1=0;
+	for(int i=0;i<len;i++){
+		if(str[i]=='0'){            //检测字符0
+			c0++;
+		}else{
+			if(max0<c0)
+				max0=c0;
+			c0=0;
+		}
+
+		if(str[i]=='1'){            //检测字符1
+			c1++;
+		}else{
+			if(max1<c1)
+				max1=c1;
+			c1=0;
+		}
+	}
+}
+
+int main(){
+	int max0=0;
+	int max1=0;
+	char *str="00001110110000001100110101101001010101011111010";
+	Calculate(str,max0,max1);
+	cout<<"max0："<<max0<<endl;
+	cout<<"max1："<<max1<<endl;
+
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/89.png)
+
+
+#### 31.实现字符串的替换
+
+用C++编写一个小程序，先请用户输入3个字符串，然后在第1个字符串中找出有第二个字符串的位置，使用第3个字符串替换掉第2个字符串，最后输出新的字符串。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void replace(const char *str,const char *sub1,const char *sub2){
+	int len1=0;
+	while(sub1[len1]!='\0')              //定位字符串sub1的长度
+		len1++;
+
+	int len2=0;
+	while(sub2[len2]!='\0')              //定位字符串sub2的长度
+		len2++;
+
+	int lenstr=0;
+	while(str[lenstr]!='\0')             //定位字符串str的长度
+		lenstr++;
+
+	vector<int> pos;
+	for(int i=0;i<lenstr-len1+1;i++){    //定位sub1子串的位置
+		int j;
+		for(j=0;j<len1;j++){
+			if(str[i+j]!=sub1[j])
+				break;
+		}
+		if(j==len1)
+			pos.push_back(i);
+	}
+
+	int newlen=lenstr-pos.size()*len1+pos.size()*len2+1;   //计算新字符串的长度
+	char *newstr=(char*)malloc(newlen*sizeof(char));       //申请内存空间
+
+	int c1=0;
+	int c2=0;
+	for(int i=0;i<lenstr;i++){
+		if(i!=pos[c2]){
+			newstr[c1]=str[i];
+			c1++;
+		}else{
+			for(int j=0;j<len2;j++){                        //替换
+				newstr[c1]=sub2[j];
+				c1++;
+			}
+			i=i+len1-1;
+			c2++;
+		}
+	}
+	newstr[c1]='\0';
+	cout<<newstr<<endl;
+	free(newstr);
+}
+
+int main(){
+	char *str="what is you nyou";
+	char *sub1="you";
+	char *sub2="me";
+	replace(str,sub1,sub2);
+
+	system("pause");
+}
+```
+
+程序运行结果：
+
+![](/images/posts/C++/90.png)
