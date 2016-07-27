@@ -661,3 +661,299 @@ int main(){
 ![](/images/posts/C++/148.png)
 
 main()函数中定义了两个类B的对象，它们的基类是A。由于这两个对象都是栈中分配的，当main()函数退出时会发生析构，又因为obj1比obj2先声明，所以obj2先析构，它们析构的顺序是首先执行B的析构函数，然后再执行A的析构函数。
+
+
+#### 22.复制构造函数是什么？什么情况下会用到它？什么是深复制和浅复制？
+
+复制构造函数是一种特殊的构造函数，它由编译器调用来完成一些基于同一类的其他对象的构造及初始化。
+
+如果在类中没有显式声明一个复制构造函数，那么，编译器会私下里指定一个函数来进行对象之间的位复制，这个隐含的构造函数简单地关联了所有的类成员。
+
+在C++中，3中对象需要复制，此时复制构造函数将会被调用：
+
+1.一个对象以值传递的方式传入函数体；
+
+2.一个对象以值传递的方式从函数返回；
+
+3.一个对象需要通过另一个对象进行初始化。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class Test{
+public:
+	int a;
+	Test(int x){
+		a=x;
+	}
+	Test(Test &test){
+		cout<<"copy constructor"<<endl;
+		a=test.a;
+	}
+};
+
+void fun1(Test test){               //(1)值传递入函数体
+	cout<<"func()..."<<endl;
+}
+ 
+Test fun2(){                        //(2)值传递从函数体返回
+	Test t(2);
+	cout<<"fun2()"<<endl;
+	return t;
+}
+
+int main(){
+	Test t1(1);
+	Test t2=t1;                     //(3)用t1对t2做初始化
+	cout<<"before fun1()..."<<endl;
+
+	fun1(t1);
+
+	Test t3=fun2();
+	cout<<"after fun2()..."<<endl;
+
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/149.png)
+
+
+深复制和浅复制：
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class Test{
+public:
+	char *buf;
+	Test(void){                        //不带参数的构造函数
+		buf=NULL;
+	}
+	Test(const char *str){             //带参数的构造函数
+		buf=new char[strlen(str)+1];   //分配堆内存
+		strcpy(buf,str);               //复制字符串
+	}
+	~Test(){
+		if(buf!=NULL){
+			delete buf;                //释放buf指向的堆内存
+			buf=NULL;
+		}
+	}
+};
+
+int main(){
+	Test t1("hello");
+	Test t2=t1;         //调用默认的复制构造函数
+	cout<<"(t1.buf==t2.buf)?："<<(t1.buf==t2.buf?"yes":"no")<<endl;
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/150.png)
+
+程序退出的时候会崩溃，原因在于t1对象中的buf和t2对象中的buf指向同一地址，退出的时候进行两次析构，释放同一块内存。这就是浅复制。下面是深复制代码：
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class Test{
+public:
+	char *buf;
+	Test(void){                        //不带参数的构造函数
+		buf=NULL;
+	}
+	Test(const char *str){             //带参数的构造函数
+		buf=new char[strlen(str)+1];   //分配堆内存
+		strcpy(buf,str);               //复制字符串
+	}
+	Test(Test &test){
+		buf=new char[strlen(test.buf)+1];
+		strcpy(buf,test.buf);
+	}
+	~Test(){
+		if(buf!=NULL){
+			delete buf;                //释放buf指向的堆内存
+			buf=NULL;
+		}
+	}
+};
+
+int main(){
+	Test t1("hello");
+	Test t2=t1;         //调用默认的复制构造函数
+	cout<<"(t1.buf==t2.buf)?："<<(t1.buf==t2.buf?"yes":"no")<<endl;
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/151.png)
+
+复制构造函数是一种特殊的构造函数，它由编译器调用来完成一些基于同一类的其他对象的构造及初始化。
+
+浅复制是让新旧两个对象指向同一个外部的内容，而深复制是指为新对象制作了外部对象的独立复制。
+
+#### 23.什么时候编译器会产生默认的copy constructor呢？如果已经写了一个构造函数，编译器还会生成copy constructor吗？
+
+答：如果用户没有自定义复制构造函数，并且在代码中使用到了复制构造函数，编译器就会生成默认的复制构造函数；但是如果用户定义了复制构造函数，编译器就不会再产生复制构造函数。
+
+如果用户定义了一个构造函数，但不是复制构造函数，而此时在代码中又用到了复制构造函数，编译器也还会生成默认的复制构造函数。
+
+
+#### 24.写一个继承类的复制函数
+
+如果基类没有私有成员，即所有成员都能被派生类访问，则派生类的复制构造函数很容易编写。但如果基类有私有成员，并且这些私有成员必须在调用派生类的复制构造函数时初始化。方法：使用基类的复制构造函数。
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class Base{
+public:
+	Base():i(0){cout<<"Base()"<<endl;}           //默认普通构造函数
+	Base(int n):i(n){cout<<"Base(int)"<<endl;}   //普通构造函数
+	Base(const Base &b):i(b.i){                  //复制构造函数
+		cout<<"Base(Base&)"<<endl;
+	}
+private:
+	int i;                                       //私有成员
+};
+
+class Derived:public Base{
+public:
+	Derived():Base(0),j(0){cout<<"Derived()"<<endl;}    //默认普通构造函数
+	Derived(int m,int n):Base(m),j(n){cout<<"Derived(int,int)"<<endl;}   //普通构造函数
+	Derived(Derived &obj):Base(obj),j(obj.j){           //调用Derived类的复制构造函数
+		cout<<"Derived(Derived&)"<<endl;                //调用了Base的复制构造函数
+	}
+private:
+	int j;
+};
+
+int main(){
+	Base b(1);
+	Derived obj(2,3);
+	cout<<"------------------"<<endl;
+	Derived d(obj);                      //调用Derived的复制构造函数
+	cout<<"------------------"<<endl;
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/152.png)
+
+#### 25.复制构造函数和赋值构造函数有什么区别？
+
+复制构造和赋值函数有以下三个区别：
+
+1.复制构造是一个对象初始化一块内存区域，这块内存就是新对象的内存区：
+
+```cpp
+class A;
+A a;
+A b=a;    //复制构造函数调用
+A b(a);   
+```
+
+而赋值函数是对于一个已经被初始化的对象来进行赋值操作。例如：
+
+```cpp
+class A;
+A a;
+A b;
+b=a;       //赋值函数调用
+```
+
+2.一般来说在数据成员包含指针对象的时候，应该考虑两种不同的处理需求：一种是复制指针对象，另一种是引用指针对象。**复制构造函数大多数情况下是复制，赋值函数则是引用对象**。
+
+3.实现不一样。复制构造函数首先是一个构造函数，它调用的时候是通过参数对象初始化产生一个对象。赋值函数则是把一个新的对象赋值给一个原有的对象，所以原来的对象中有内存分配要先把内存释放掉，而且还要检查一下两个对象是不是同一个对象，如果是，则不做任何操作。
+
+
+#### 26.编写类String的构造函数、析构函数和赋值函数
+
+```cpp
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+#include <iostream>
+using namespace std;
+
+class mString{
+public:
+	mString(const char *str=NULL);      //普通构造函数
+	mString(const mString &other);      //复制构造函数
+	~mString();                         //析构函数
+	mString& operator=(const mString &other);  //赋值函数
+private:
+	char *m_String;                    //私有成员 保存字符串
+};
+
+mString::~mString(){                   //析构函数
+	cout<<"Destructing"<<endl;
+	if(m_String!=NULL){
+		delete []m_String;
+		m_String=NULL;
+	}
+}
+
+mString::mString(const char *str){    //构造函数
+	cout<<"Constructing"<<endl;
+	if(str==NULL){
+		m_String=new char[1];        //分配一个字节
+		*m_String='\0';              //字符串结束符
+	}else{
+		m_String=new char[strlen(str)+1];   
+		strcpy(m_String,str);
+	}
+}
+
+mString::mString(const mString &other){  //复制构造函数
+	cout<<"Constructing Copy"<<endl;
+	m_String=new char[strlen(other.m_String)+1];
+	strcpy(m_String,other.m_String);
+}
+
+
+mString& mString::operator=(const mString &other){    //运算符重载
+	cout<<"Operate=Function"<<endl;
+	if(this==&other)         //检测是否为同一对象
+		return *this;
+	delete []m_String;       //释放堆内存
+	m_String=new char[strlen(other.m_String)+1];
+	strcpy(m_String,other.m_String);
+	return *this;
+}
+
+void zhixing(){
+	mString a("hello");
+	mString b("world");
+	mString c(a);
+	c=b;
+}
+
+int main(){
+	zhixing();
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/160.png)
