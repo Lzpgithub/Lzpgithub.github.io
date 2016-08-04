@@ -154,10 +154,12 @@ int main() {
 }
 ```
 
+![](/images/posts/C++/190.png)
+
 #### 为什么摒弃auto_ptr？
 
 ```cpp
-auto_ptr< string> ps (new string ("Hello”）;
+auto_ptr<string> ps(new string ("Hello”));
 auto_ptr<string> vocation; 
 vocaticn = ps;
 ```

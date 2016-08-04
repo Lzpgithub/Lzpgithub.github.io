@@ -125,7 +125,7 @@ struct A{
 
 int main(){
 	A *a = new A;
-	a->str = "testdata";    //报错
+	a->str = "testdata";    
 	cout<<a->str<<endl;
 	system("pause");
 }
@@ -157,7 +157,7 @@ int main(){
 	append(96);
 	append(21);
 	append(17);
-	print()；            //打印
+	print();            //打印
 }
 
 void append(int N){
@@ -253,7 +253,7 @@ void print(){
 		printf("There is not any element");
 		return;
 	}
-	leftside=root-left;
+	leftside=root->left;
 	while(1){
 		if(leftside->left==NULL){
 			break;

@@ -123,8 +123,7 @@ void Complex::display()
 	cout<<"("<<real<<","<<imag<<"i)"<<endl;
 }
 
-int
-main( )
+int main()
 { 
 	Complex c1(3,4),c2(5,-10),c3;
 	c3=c1+c2;                      //运算符+用于复数运算

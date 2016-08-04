@@ -90,7 +90,7 @@ int main(){
 	&d=b;        //错 引用不能第二次赋值
 	int *p;
 	*p=5;        //错 p不知道指向那个空间
-	return 0；
+	return 0;
 }
 ```
 
@@ -129,7 +129,7 @@ int main(){
 
 运行结果：
 
-![](/images/posts/Cpoint/58.png)
+![](/images/posts/C++/58.png)
 
 如果不使用引用，可以使用二维指针可以达到同样的效果
 

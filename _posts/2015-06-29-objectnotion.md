@@ -245,6 +245,12 @@ int main(){
 
 2.使用静态数据成员可以隐蔽信息，因为静态成员可以是private成员，而全局对象不能。
 
+静态成员如果有n个同类的对象，那么每一个对象都分别有自己的数据成员，不同对象的数据成员各自有值，互不相干。但是有时人们希望有某一个或几个数据成员为所有对象所共有。这样可以实现数据共享。
+
+在前面介绍过全局变量能够实现数据共享。如果在一个程序文件中有多个函数，在每一个函数中都可以改变全局变量的值，全局变量的值为各函数共享。但是用全局变量的安全性得不到保证，由于在各处都可以自由地修改全局变量的值，很有可能偶一失误，全局变量的值就被修改，导致程序的失败。因此在实际工作中很少使用全局变量。
+
+如果想在同类的多个对象之间实现数据共享，也不要用全局对象，可以用静态的数据成员。
+
 
 #### 10.有哪几种情况只能用初始化列表，而不能用赋值？
 
@@ -888,11 +894,6 @@ b=a;       //赋值函数调用
 
 ```cpp
 #include <iostream>
-#include <list>
-
-using namespace std;
-
-#include <iostream>
 using namespace std;
 
 class mString{
@@ -957,3 +958,127 @@ int main(){
 程序运行结果为：
 
 ![](/images/posts/C++/160.png)
+
+#### 27.分析代码写结果--C++类个成员函数关系
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class A{
+private:
+	int num;
+public:
+	A(){
+		cout<<"Default constructor"<<endl;
+	}
+	~A(){
+		cout<<"Desconstructor "<<num<<endl;
+	}
+	A(const A &a){
+		cout<<"Copy constructor"<<endl;
+	}
+	void operator=(const A &a){
+		cout<<"Overload operator"<<endl;
+	}
+	void SetNum(int n){
+		num=n;
+	}
+};
+
+void zhixing(){
+	A a1;            //调用普通构造函数
+	A a2(a1);        //调用复制构造函数
+	A a3=a1;         //调用复制构造函数
+	A &a4=a1;        //引用a1
+	a1.SetNum(1);
+	a2.SetNum(2);
+	a3.SetNum(3);
+	a4.SetNum(4);
+}
+
+int main(){
+	zhixing();
+	system("pause");
+}
+```
+
+程序运行结果为：
+
+![](/images/posts/C++/161.png)
+
+#### 28.分析代码写输出--C++类的临时对象
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class B{
+public:
+	B(){
+		cout<<"default constructor"<<endl;
+	}
+	~B(){
+		cout<<"destructed"<<endl;
+	}
+	B(int i):data(i){
+		cout<<"constructed by parameter "<<data<<endl;
+	}
+private:
+	int data;
+};
+
+B Play(B b){
+	return b;
+}
+
+void zhixing1(){
+	B t1=Play(5);         //调用普通构造函数
+	B t2=Play(t1);        //调用复制构造函数
+}
+
+void zhixing2(){
+	B t1=Play(5);  
+	B t2=Play(10);  
+}
+
+int main(){
+	zhixing1();
+	system("pause");
+}
+```
+
+程序解析：
+
+这里调用Play()函数时，有两种参数类型的传递方式：
+
+（1）如果传递的参数时整型数，那么在其函数栈中首先会调用带参数的构造函数产生一个临时对象b，然后返回前（在return代码执行时）调用类的复制构造函数生成临时对象（这样函数返回后主函数的对象就被初始化了），最后这个临时对象b会在函数返回时（在return代码执行后）析构。
+
+（2）如果传递的参数时B类对象，只有第一步与上面不同，即其函数栈中首先调用复制构造函数产生一个临时对象b，其余步骤完全相同。
+
+zhixing1()函数执行结果：
+
+![](/images/posts/C++/162.png)
+
+zhixing2()函数执行结果：
+
+![](/images/posts/C++/163.png)
+
+为了更加详细说明结果，在B类中加入一个自定义的复制构造函数：
+
+```cpp
+B(B &b){
+	cout<<"copy constructor"<<endl;
+	data=b.data;
+}
+```
+
+zhixing1()函数执行结果：
+
+![](/images/posts/C++/164.png)
+
+zhixing2()函数执行结果：
+
+![](/images/posts/C++/165.png)
