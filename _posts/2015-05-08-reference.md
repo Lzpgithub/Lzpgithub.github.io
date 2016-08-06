@@ -233,6 +233,150 @@ int main(){
 }
 ```
 
+函数返回对象：
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class A{
+public:
+	A(int a):n(a){
+		cout<<"constructor func"<<endl;
+	}
+
+	A(const A &aproj){
+		cout<<"copy constructor func"<<endl;
+		n=aproj.n;
+	}
+
+	~A(){
+		cout<<"desconstructor func"<<endl;
+	}
+	int n;
+};
+
+A test(A a){
+	return a;
+}
+
+int main(){
+	A a(1);
+	test(a);
+	system("pause");
+}
+```
+
+![](/images/posts/C++/198.png)
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class A{
+public:
+	A(int a):n(a){
+		cout<<"constructor func"<<endl;
+	}
+
+	A(const A &aproj){
+		cout<<"copy constructor func"<<endl;
+		n=aproj.n;
+	}
+
+	~A(){
+		cout<<"desconstructor func"<<endl;
+	}
+	int n;
+};
+
+A test(A a){
+	return a;
+}
+
+int main(){
+	A a(1);
+	A a1=test(a);
+	cout<<a1.n<<endl;
+	system("pause");
+}
+```
+
+![](/images/posts/C++/199.png)
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class A{
+public:
+	A(int a):n(a){
+		cout<<"constructor func"<<endl;
+	}
+
+	A(const A &aproj){
+		cout<<"copy constructor func"<<endl;
+		n=aproj.n;
+	}
+
+	~A(){
+		cout<<"desconstructor func"<<endl;
+	}
+	int n;
+};
+
+A& test(A a){
+	return a;
+}
+
+int main(){
+	A a(1);
+	test(a);
+	system("pause");
+}
+```
+
+![](/images/posts/C++/200.png)
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+class A{
+public:
+	A(int a):n(a){
+		cout<<"constructor func"<<endl;
+	}
+
+	A(const A &aproj){
+		cout<<"copy constructor func"<<endl;
+		n=aproj.n;
+	}
+
+	~A(){
+		cout<<"desconstructor func"<<endl;
+	}
+	int n;
+};
+
+A& test(A a){
+	return a;
+}
+
+int main(){
+	A a(1);
+	A a1=test(a);
+	cout<<a1.n<<endl;
+	system("pause");
+}
+```
+
+![](/images/posts/C++/201.png)
+
 
 ##### 常量引用
 

@@ -78,7 +78,9 @@ int main(){
 
 int main(){
 	char *str[]={"Welcome","to","Fortemedia","Nanjing"};
-	char **p=str+1;  //p存的是数组1的地址 *p就是str[1]，也就是“to”的地址
+	char **p=str+1;  //p存的是数组1的地址 *p就是str[1]，也就是“to”的地址 
+                     //总结来说p是数组地址 意为第几个元素
+                     //*p为字符串地址
 	str[0]=(*p++)+2; //出错 等价于*p+2 没有这个内存单元 然后*p指向"Fortemedia"
 	str[1]=*(p+1);   //"Nanjing"
 	str[2]=p[1]+3;   //"jing"
