@@ -213,9 +213,9 @@ void main(){
 	for(i = 0; i < n; i++)   //初始化全为0
 		digit[i] = '0';  
 	
-	printf("\n{}");          //输出空集合
+	printf("\n( )");          //输出空集合
 
-	while (LOOP) {  
+	while(LOOP){  
 	     for(i = 0;i < n && digit[i] == '1';i++)   //找到第一个0的位置
 			digit[i]='0';             
 
@@ -225,11 +225,11 @@ void main(){
 	          digit[i]='1';  //把第一个0的位置 把它置为1
 	
 	     for (i = 0; i < n && digit[i] == '0'; i++);   //找到第一个1的位置  开始打印结果
-	     printf("\n{%d",i+1);                          
+	     printf("\n(%d",i+1);                          
 	     for (j=i + 1;j<n;j++)                         //有多少个1就打印多少个 
 	          if(digit[j] == '1')  
 	               printf(",%d", j + 1);  
-	     printf("}");  
+	     printf(")");  
 	}  
 
 	system("pause");
