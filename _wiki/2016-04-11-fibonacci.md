@@ -38,6 +38,13 @@ keywords: 算法，Fibonacci
 
 f(n) 的规律符合 Fibonacci 数列的规律，它与 Fibonacci 的区别是 Fibonacci 的前两个元素是 1，1，而 f(n) 的规律是 1，2，即可知有 `f(n)=fibo(n+1)`。
 
+也可以用动态规划算法：
+
+```cpp
+0 1 2 3 5 8 
+d[n]=d[n-1](走一步到n)+d[n-2](走两步到n)
+```
+
 ### 简单的 C++ 实现
 
 ```cpp
