@@ -166,3 +166,116 @@ int main(){
 %p：指针
 
 -：结果左对齐，右边填空格
+
+
+#### char*字符串函数
+
+##### strcpy
+
+即strcpy只用于字符串复制，并且它不仅复制字符串内容之外，还会复制字符串的结束符。
+
+```cpp
+char* strcpy(char* des,const char* source){
+	char* r=des;
+	assert((des != NULL) && (source != NULL));
+　	while((*des++ = *source++)!='\0');
+　	return r;
+}
+```
+
+##### memcpy
+
+```cpp
+void *memcpy2(void *memTo,const void *memFrom,size_t size){
+	assert((memTo!=NULL)&&(memFrom!=NULL));     //保存memTo和memFrom必须有效
+	char *tempFrom=(char*)memFrom;              //保存memFrom的首地址
+	char *tempTo=(char*)memTo;                  //保存memTo首地址
+	while(size-->0)                             //循环size次 复制memFrom的值到memTo中
+		*tempTo++=*tempFrom++;
+	return memTo;
+}
+```
+
+size是字节的大小，表示要复制多少个字节。memcpy可以复制任意内容，例如字符数组、整型、结构体、类等等。
+
+##### strlen
+
+求char*的长度，以“\0”结束判读。
+
+##### strcmp
+
+实现C/C++库函数中的strcmp函数。对于两个字符串str1和str2，若相等则返回0，若str1大于str2则返回1，若str1小于str2返回-1。
+
+```cpp
+int strcmp(const char *src,const char *dst){
+	int ret=0;
+	//循环比较两个字符是否相等
+	//如果不等或者到了dst字符串末尾 退出循环
+	while(!(ret=*(unsigned char *)src-*(unsigned char *)dst)&&*dst){
+		++src;
+		++dst;
+	}
+	if(ret<0)               //ret保存着字符比较的结果
+		ret=-1;
+	else if(ret>0)
+		ret=1;
+	return ret;
+}
+```
+
+##### strrev
+
+字符串反转函数：strrev，例如输入“abcd”，输出为“dcba”。
+
+```cpp
+char *strrev(const char *str){         //通过数组下标方式访问字符串
+	int len=strlen(str);
+	char *tmp=new char[len+1];
+	strcpy(tmp,str);
+	for(int i=0;i<len/2;i++){
+		char c=tmp[i];
+		tmp[i]=tmp[len-i-1];
+		tmp[len-i-1]=c;
+	}
+	return tmp;
+}
+```
+
+##### strcat
+
+使用strcat连接字符串。
+
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+	char *str1="abc";
+	char *str2="ABC";
+	char str[10];
+	sprintf(str,"%s%s",str1,str2);
+	cout<<str<<endl;
+	char str3[10];
+	str3[0]='\0';       //str3[0]赋为结束符'\0' 以便strcat能正常使用 
+	strcat(str3,str1);  //str3变为"abc"
+	strcat(str3,str2);  //str3变为"abcABC"
+	cout<<str3<<endl;
+	system("pause");
+}
+```
+
+```cpp
+void strcat(char *str1,const char *str2){
+	int pos=0;
+	while(str1[pos]!='\0')       //定位字符串str1的末尾
+		pos++;
+
+	int len=0;                   //计算字符串str2的长度
+	while(str2[len]!='\0')
+		len++;
+
+	for(int i=0;i<=len;i++){
+		str1[pos+i]=str2[i];
+	}
+	cout<<str1<<endl;
+}
+```

@@ -151,6 +151,57 @@ int main(){
 }
 ```
 
+```cpp
+#include <iostream>
+using namespace std;
+
+class A{
+public:
+	A(int n):Anum(n){}
+	void shownum(){
+		cout<<Anum<<endl;
+	}
+	int Anum;
+};
+
+class B{
+public:
+	B(int n){
+		Bnum=n;
+	}
+	void shownum() const{
+		cout<<Bnum<<endl;
+	}
+	int Bnum;
+};
+
+class C{
+public:
+	C(int n,int x):Cnum1(n),Cnum2(x){}   //常数据成员只能用初始化列表初始化
+	void shownum() const{                //常成员函数既可以访问常数据成员 也可访问非常数据成员
+		cout<<Cnum1<<" "<<Cnum2<<endl;
+	}
+	void display(){
+		cout<<Cnum1<<endl;
+	}
+	const int Cnum1;
+	int Cnum2;
+};
+
+int main(){
+	const A a(2);
+	a.shownum();        //编译报错 常对象不能调用非常成员函数
+
+	const B b(2);
+	b.shownum();        //编译通过 shownum为B类常成员函数
+
+	C c(3,4);
+	c.shownum();        //编译通过
+	c.display();        //普通成员函数既可以访问常数据成员 也可访问非常数据成员
+	system("pause");
+}
+```
+
 #### 指向对象的指针常量
 
 将指针变量声明为const这样指针值始终保持为其初值，不能改变。如：

@@ -77,5 +77,56 @@ ORDER BY vend_name;
 
 RIRIM()函数去掉值右边的所有空格，通过使用RTRIM()，各个列都进行了整理。
 
+#### 使用别名
+
+从前面的输出中可以看到，SELECT语句拼接地址字段工作得很好。但次新计算列的名字是什么呢？实际上它没有名字，它只是一个值。但是一个未命名的列不能用于客户机应用中，因为客户机没有办法引用它。
+
+为了结局这个问题，SQL支持列别名。列别名是一个字段或值得替换名。别名用AS关键字赋予。请看下面的SELECT语句：
+
+```cpp
+SELECT RTRIM(vend_name)+'('+RTRIM(vend_country)+')' AS vend_title 
+FROM Vendors
+ORDER BY vend_name;
+```
+
+输出结果为：
+
+![](/images/posts/DataBase/88.png)
+
+使用下面相同语句可以得到相同的结果：
+
+```cpp
+SELECT RTRIM(vend_name)||'('||RTRIM(vend_country)||')' AS vend_title 
+FROM Vendors
+ORDER BY vend_name;
+```
+
+AS vend_title指示SQL创建一个包含指定计算的名为vend_title的计算字段。
+
+#### 执行算术计算
+
+计算字段的另一常见用途是对检索出的数据进行算术计算。例如，Orders表包含收到的所有订单，OrderItems表包含每个订单中的各项物品。下面SQL语言检索订单号20008中的所有物品：
+
+```cpp
+SELECT prod_id,quantity,item_price
+FROM OrderItems
+WHERE order_num = 20008;
+```
+
+item_price列包含订单中每项物品的单价，如下汇总物品的价格（单价乘以订购数量）：
+
+```cpp
+SELECT prod_id,quantity,item_price,
+quantity*item_price AS expanded_price
+FROM OrderItems
+WHERE order_num=20008;
+```
+
+![](/images/posts/DataBase/89.png)
+
+输出中显示的expanded_price列位一个计算字段。此计算为quantity*item_price。客户机现在可以使用这个新的计算列，就像其他列一样。
+
+
+
 
 
