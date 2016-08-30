@@ -198,6 +198,20 @@ int main(){
 
 ```cpp
 #include <iostream>
+using namespace std;
+int main(){
+	int i=2;
+	int &j=i;
+	cout<<i<<" "<<j<<endl;
+	cout<<&i<<" "<<&j<<endl;
+	system("pause");
+}
+```
+
+![](/images/posts/C++/250.png)
+
+```cpp
+#include <iostream>
 
 using namespace std;
 
@@ -217,11 +231,12 @@ int main(){
 
 ```cpp
 #include <iostream>
-
 using namespace std;
 
 int &test(){
 	int i=10;
+	cout<<i<<endl;
+	cout<<&i<<endl;
 	return i;  
 }
 
@@ -229,9 +244,12 @@ int main(){
 	int &j=test();  //引用局部变量 
 	j++;
 	cout<<j<<endl;  //11  没有报错
+	cout<<&j<<endl;
 	system("pause");
 }
 ```
+
+![](/images/posts/C++/249.png)
 
 函数返回对象：
 
