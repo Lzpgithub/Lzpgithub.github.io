@@ -53,40 +53,40 @@ int main(){
 
 例如：设计一个栈的类。如果不采用类模板，则在设计之初就要确定栈中数据的类型。如果采用类模板，则只需通过类模板实例化实现。
 
-![](/images/posts/C++/243.png)
+![](/images/posts/C++/251.png)
 
-![](/images/posts/C++/244.png)
+![](/images/posts/C++/252.png)
 
 使用类模板的主要优点：
 
-![](/images/posts/C++/245.png)
+![](/images/posts/C++/253.png)
 
 类模板是C++语言的一个非常重要的特征，在C++的标准模板库（Standard Template Library，简称STL）中提供了大量的类模板，有关STL的内容将在后面章节中详细讲述。
 
 类模板的一般定义：
 
-![](/images/posts/C++/246.png)
+![](/images/posts/C++/254.png)
 
-![](/images/posts/C++/247.png)
+![](/images/posts/C++/255.png)
 
 **类模板定义最后的分号不可省，因为与类的定义一样，类模板的定义也是一条语句，需要一个分号作为语句的结束**。
 
 定义类模板的成员函数时，有两种方法如图所示：
 
-![](/images/posts/C++/248.png)
+![](/images/posts/C++/256.png)
 
 
 在类的外部定义类模板的成员函数的一般形式：
 
-![](/images/posts/C++/249.png)
+![](/images/posts/C++/257.png)
 
-![](/images/posts/C++/250.png)
+![](/images/posts/C++/258.png)
 
 ##### 使用模板参数
 
 在定义类模板的数据成员和函数成员时，可以使用模板参数：
 
-![](/images/posts/C++/251.png)
+![](/images/posts/C++/259.png)
 
 类模板可以使用非类型参数。非类型的参数通常在模板定义过程中当做常量使用。例如上例中的类模板Array的第二个模板参数size即是一个非类型的参数，并且该参数用来设定数组的长度。
 
@@ -94,17 +94,17 @@ int main(){
 
 声明一个类模板的非类型参数的一般语法形式如：
 
-![](/images/posts/C++/252.png)
+![](/images/posts/C++/260.png)
 
 对于带有非类型参数的类模板，实例化时需要用一个常量来指定这个参数：
 
-![](/images/posts/C++/253.png)
+![](/images/posts/C++/261.png)
 
 ##### 模板参数的默认实参
 
 定义类模板时，可以设定其参数的默认值，即参数的默认实参，包括默认类型参数和默认非类型参数。例如，对于Array模板，设定其默认保存的数据类型为int型，并且其数组尺寸的默认值为100：
 
-![](/images/posts/C++/254.png)
+![](/images/posts/C++/262.png)
 
 ##### 生成模板实例
 
@@ -112,11 +112,11 @@ int main(){
 
 实例化类模板时，对于类型参数，可以用C++内建的类型实例化，也可以用自定义的类型。类模板在实例化时没有参数推导机制，所有的模板参数必须指定，除非模板参数带有默认实参。例如，实例化类模板Array：
 
-![](/images/posts/C++/255.png)
+![](/images/posts/C++/263.png)
 
 非类型参数的模板实例化：
 
-![](/images/posts/C++/256.png)
+![](/images/posts/C++/264.png)
 
 ##### 类模板示例
 
@@ -124,9 +124,9 @@ int main(){
 
 下面程序定义一个Stack类模板，其模板参数有类型参数和非类型参数，并用这个类模板来处理不同类型的数据，实现代码及结果：
 
-![](/images/posts/C++/257.png)
+![](/images/posts/C++/265.png)
 
-![](/images/posts/C++/258.png)
+![](/images/posts/C++/266.png)
 
 代码中声明一个类模板Stack，成员函数push()和pop()分别用来向类中添加元素和弹出元素。在main()函数对类模板Stack进行实例化并创建对象，然后调用成员函数进行栈的相关操作。
 
