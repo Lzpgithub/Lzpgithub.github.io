@@ -6,10 +6,6 @@ description: 常用的算法编程
 keywords: 常用的算法编程
 ---
 
-内容引用自：http://blog.csdn.net/morewindows/article/details/7370155/
-
-其中一些做了修改。
-
 #### 全组合算法
 
 ##### 从n中选m个数
@@ -303,6 +299,37 @@ void main(){
 ![](/images/posts/C++/208.png)
 
 
+##### 列出所有子集——递归方法
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+void dfc(vector<int> &vec,int pos,string str){
+	for(int i=pos;i<vec.size();i++){
+		str.push_back(vec[i]+'0');
+		cout<<str<<endl;
+		dfc(vec,i+1,str);
+		str.pop_back();
+		//while(i<vec.size()-1&&vec[i]==vec[i+1])
+		//	i++;
+	}
+}
+int main(){
+	vector<int> vec;
+	vec.push_back(1);
+	vec.push_back(2);
+	//vec.push_back(2);
+	vec.push_back(3);
+	string str;
+	dfc(vec,0,str);
+	system("pause");
+}
+```
+
+![](/images/posts/C++/267.png)
+
 
 
 #### 全排序算法
@@ -491,7 +518,7 @@ int main(){
 ![](/images/posts/C++/212.png)
 
 
-##### 掉重复的全排列的递归实现
+##### 去掉重复的全排列的递归实现
 
 由于全排列就是从第一个数字起每个数分别与它后面的数字交换。我们先尝试加个这样的判断——如果一个数与后面的数字相同那么这二个数就不交换了。如122，第一个数与后面交换得212、221。然后122中第二数就不用与第三个数交换了，但对212，它第二个数与第三个数是不相同的，交换之后得到221。与由122中第一个数与第三个数交换所得的221重复了。所以这个方法不行。
 
