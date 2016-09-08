@@ -279,3 +279,186 @@ void strcat(char *str1,const char *str2){
 	cout<<str1<<endl;
 }
 ```
+
+#### 关于string的函数
+
+需包含头文件：include <string>
+
+##### string初始化
+
+```cpp
+string str="abc";       //直接初始化
+
+str1.push_back('a');    //压入单个字符
+
+string str1="ABC";       
+string str2=str1;       //互相赋值
+
+char c[10]="abc";       //char*初始化
+string str3(c);
+
+string str4(5,'a');     //用n个字符c初始化
+```
+
+##### 返回string大小和长度
+
+```cpp
+string str="affds"; 
+cout<<str.size()<<" "<<str.length()<<endl;  //打印为 5  5
+```
+
+##### 返回string的当前容量(即string中不必增加内存即可存放的元素个数)
+
+```cpp
+string str="affds"; 
+cout<<str.capacity()<<endl;    //打印  15
+```
+
+##### 判断string是否为空
+
+```cpp
+string str="affds"; 
+cout<<str.empty()<<endl;       //打印 0
+```
+
+##### 两个string的连接
+
+```cpp
+string str1="ABC"; 
+string str2="abc";
+string str=str1+str2;
+cout<<str<<endl;              //打印ABCabc
+```
+
+##### string的比较
+
+**运算符">","<",">=","<=","!="均被重载用于字符串的比较**
+
+```cpp
+string str1="ABC"; 
+string str2="abc";
+cout<<(str1>str2)<<endl;           //0
+cout<<(str1<str2)<<endl;           //1
+cout<<(str1==str2)<<endl;          //0
+cout<<str1.compare(str2)<<endl;    //-1   大于输出1  小于输出-1  等于输出0
+```
+
+##### string的子串
+
+```cpp
+string str="abcdefg"; 
+string strsub=str.substr(0,3);
+cout<<strsub<<endl;                //打印abc
+```
+
+##### string查找函数
+
+**int find(char c, int pos = 0) const：**从pos开始查找字符c在当前字符串的位置。
+
+```cpp
+string str="abcdefg"; 
+cout<<str.find('c',0)<<endl;       //打印 2
+```
+
+##### string替换函数
+
+**string &replace(int p0, int n0,const string &s)：**删除从p0开始的n0个字符，然后在p0处插入串s
+
+**string &replace(int p0, int n0,const char \*s)：**删除从p0开始的n0个字符，然后在p0处插入串s
+
+**string &replace(int p0, int n0,int n, char c)：**删除p0开始的n0个字符，然后在p0处插入n个字符c
+
+```cpp
+string str="abcdefg"; 
+str.replace(0,2,"ABC");
+cout<<str<<endl;          //打印ABCdefg
+```
+
+##### string插入函数
+
+在p0位置插入串s：
+
+```cpp
+string &insert(int p0, const char *s);
+string &insert(int p0,const string &s);
+```
+
+在p0位置插入字符串s中pos开始的前n个字符：
+
+```cpp
+string &insert(int p0, const char *s, int n);
+string &insert(int p0,const string &s, int pos, int n);
+```
+
+在p0处插入n个字符c：
+
+```cpp
+string &insert(int p0, int n, char c);
+```
+
+```cpp
+string str="abcdefg"; 
+str.insert(2,"ABC");
+cout<<str<<endl;            //输出abABCcdefg
+```
+
+##### string的删除函数
+
+**string &erase(int pos = 0, int n = npos)：**删除pos开始的n个字符，返回修改后的字符串
+
+```cpp
+string str="abcdefg"; 
+str.erase(1,3);
+cout<<str<<endl;                     //aefg
+```
+
+##### string反序
+
+```cpp
+string str="abcdefg"; 
+string s(str.rbegin(),str.rend());
+cout<<s<<endl;                       //gfedcba
+```
+
+##### string排序
+
+```cpp
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+int main(){
+	string str="dcsazg"; 
+	sort(str.begin(),str.end());
+	cout<<str<<endl;               //acdgsz
+	system("pause");
+}
+```
+
+##### string中的front函数和back函数
+
+```cpp
+string str="dcsazg"; 
+cout<<str.front()<<" "<<str.back()<<endl;  //d  g
+```
+
+#### 申请内存函数
+
+##### malloc
+
+```cpp
+int *m=(int*)malloc(5*sizeof(int));
+```
+
+##### free
+
+```cpp
+free(m);
+```
+
+##### realloc
+
+```cpp
+int *m=(int*)malloc(5*sizeof(int));
+m=(int*)realloc(m,(10+10)*sizeof(int));
+```
