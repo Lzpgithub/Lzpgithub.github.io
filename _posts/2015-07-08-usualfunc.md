@@ -36,6 +36,29 @@ int main(){
 
 ![](/images/posts/C++/186.png)
 
+3.getline
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+int main(){
+	string line;
+	vector<string> vec;
+	do{
+		getline(cin,line);
+		vec.push_back(line);
+	}while(line.length()!=0);
+	for(int i=0;i<vec.size();i++){
+		cout<<vec[i]<<endl;
+	}
+	system("pause");
+}
+```
+
+![](/images/posts/C++/276.png)
+
 #### 数值转换为char*
 
 1.itoa，ltoa，ultoa：int转char*
