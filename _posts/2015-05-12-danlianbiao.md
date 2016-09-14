@@ -73,7 +73,7 @@ Status ListDelete_L(LinkList &L,int i,ElemType &e){
 }
 ```
 
-##### 完整代码
+##### 完整代码（C代码）
 
 ```cpp
 #include <iostream>
@@ -176,5 +176,85 @@ int main(){
 	PrintLink(L);
 	system("pause");
 }
+```
 
+##### 完整代码（C++代码）
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct ListNode{                         //单链表结构体
+	int val;
+	struct ListNode *next;
+	ListNode(int v):val(v){
+		next=NULL;
+	}
+};
+
+ListNode *creatList(){                    //创建链表
+	int N;
+	cin>>N;
+	ListNode *L;
+	ListNode *pre;
+	for(int i=0;i<N;i++){
+		int num;
+		cin>>num;
+		if(i==0){
+			L=new ListNode(num);
+			pre=L;
+		}else{
+			ListNode *temp=new ListNode(num);
+			pre->next=temp;
+			pre=temp;
+		}
+	}
+	return L;
+}
+
+
+void printList(ListNode *L){            //打印链表
+	ListNode *p=L;
+	while(p!=NULL){
+		cout<<p->val<<" ";
+		p=p->next;
+	}
+	cout<<endl;
+}
+
+
+void InsertList(ListNode *L,int i,int e){     //插入结点
+	ListNode *p=L;
+	int j=1;
+	while(p!=NULL&&j<i-1){
+		j++;
+		p=p->next;
+	}
+	ListNode *q=new ListNode(e);
+	q->next=p->next;
+	p->next=q;
+}
+
+void DeleteList(ListNode *L,int i){
+	ListNode *p=L;
+	int j=1;
+	while(p!=NULL&&j<i-1){
+		j++;
+		p=p->next;
+	}
+	ListNode *q=p->next;
+	p->next=q->next;
+	delete q;
+}
+
+int main(){
+	ListNode *L;
+	L=creatList();
+	printList(L);
+	InsertList(L,2,10);
+	printList(L);
+	DeleteList(L,4);
+	printList(L);
+	system("pause");
+}
 ```

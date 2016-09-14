@@ -73,7 +73,7 @@ Status ListDelete_DuL(DuLinkList &L,int i,ElemType &e){
 }
 ```
 
-双向链表完整代码：
+双向链表完整代码（C语言）：
 
 ```cpp
 #include <iostream>
@@ -185,6 +185,107 @@ int main(){
 	int e;
 	ListDelete_DuL(L,4,e);
 	printDuLinkNodeNext(L);
+
+	system("pause");
+}
+```
+
+双向链表完整代码（C++语言）：
+
+```cpp
+#include <iostream>
+using namespace std;
+
+struct DulNode{                    //双向链表
+	int val;
+	struct DulNode *prior;
+	struct DulNode *next;
+	DulNode(int n):val(n){
+		prior=NULL;
+		next=NULL;
+	}
+};
+
+DulNode *createDulList(){          //创建双向链表
+	DulNode *L,*pre,*temp;
+	int N;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		int num;
+		cin>>num;
+		if(i==0){
+			L=new DulNode(num);
+			pre=L;
+		}else{
+			temp=new DulNode(num);
+			pre->next=temp;
+			temp->prior=pre;
+			pre=temp;
+		}
+	}
+	L->prior=temp;
+	temp->next=L;
+	return L;
+}
+
+void printDulN(DulNode *L){      //向后打印
+	DulNode *p=L;
+	cout<<p->val<<" ";
+	p=p->next;
+	while(p!=L){
+		cout<<p->val<<" ";
+		p=p->next;
+	}
+	cout<<endl;
+}
+
+void printDulP(DulNode *L){      //向后打印
+	DulNode *p=L->prior;
+	cout<<p->val<<" ";
+	p=p->prior;
+	while(p!=L->prior){
+		cout<<p->val<<" ";
+		p=p->prior;
+	}
+	cout<<endl;
+}
+
+void InsertDulList(DulNode *L,int i,int e){    //插入操作
+	DulNode *p=L;
+	int j=1;
+	while(j<i){
+		j++;
+		p=p->next;
+	}
+	DulNode *s=new DulNode(e);
+	s->next=p;
+	s->prior=p->prior;
+	p->prior->next=s;
+	p->prior=s;
+}
+
+void DeleteDulList(DulNode *L,int i){
+	DulNode *p=L;
+	int j=1;
+	while(j<i){
+		j++;
+		p=p->next;
+	}
+	p->prior->next=p->next;
+	p->next->prior=p->prior;
+	delete p;
+}
+
+int main(){
+	DulNode *L=createDulList();
+	printDulN(L);
+	printDulP(L);
+	InsertDulList(L,2,12);
+	printDulN(L);
+	printDulP(L);
+	DeleteDulList(L,4);
+	printDulN(L);
+	printDulP(L);
 
 	system("pause");
 }
