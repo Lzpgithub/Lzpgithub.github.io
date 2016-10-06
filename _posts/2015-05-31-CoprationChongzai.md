@@ -110,7 +110,7 @@ private:
 	double imag;
 };
 
-Complex Complex::operator+(Complex &c2) //定义重载运算符的函数
+Complex Complex::operator+(Complex &c2)         //定义重载运算符的函数
 {
 	Complex c;
 	c.real=real+c2.real;
@@ -232,11 +232,10 @@ void Complex::display()
 	cout<<"("<<real<<","<<imag<<"i)"<<endl;
 }
 
-int
-main( )
+int main()
 { 
 	Complex c1(3,4),c2(5,-10),c3;
-	c3=c1+c2;                      //运算符+用于复数运算
+	c3=c1+c2;                                 //运算符+用于复数运算
 	cout<<"c1=";
 	c1.display();
 	cout<<"c2=";
@@ -251,7 +250,7 @@ main( )
 
 ```cpp
 //运算符重载函数作Complex类的成员函数
-Complex Complex::operator+(int&i) 
+Complex Complex::operator+(int &i) 
 {
 	return Complex(real+i,imag);
 }
@@ -272,13 +271,13 @@ c3=i+c2;
 如果要求在使用重载运算符时运算符左侧的操作数是整型量，这时是无法利用前面定义的重载运算符的，因为无法调用i.operator+函数。可想而知，如果运算符左侧的操作数属于C++标准类型(如int)或是一个其他类的对象，则运算符重载函数不能作为成员函数，只能作为非成员函数。如果函数需要访问类的私有成员，则必须声明为友元函数。可以在Complex类中声明：
 
 ```cpp
-friend Complex operator+(int&i,Complex &c); //第一个参数可以不是类对象
+friend Complex operator+(int &i,Complex &c); //第一个参数可以不是类对象
 ```
 
 在类外定义友元函数：
 
 ```cpp
-Complex operator+(int&i, Complex &c)        //运算符重载函数不是成员函数
+Complex operator+(int &i, Complex &c)        //运算符重载函数不是成员函数
 {
 	return Complex(i+c.real,c.imag);
 }
@@ -396,6 +395,10 @@ int main( )
 
 单目运算符只有一个操作数，如!a，-b，&c，*p，还有最常用的++i和--i等。重载单目运算符的方法与重载双目运算符的方法是类似的。但由于单目运算符只有一个操作数，因此运算符重载函数只有一个参数，如果运算符重载函数作为成员函数，则还可省略此参数。
 
+“++”和“--”运算符有两种使用方式，前置自增运算符和后置自增运算符，它们的作用是不一样的，在重载时怎样区别这二者呢？
+
+**C++约定：在自增(自减)运算符重载函数中，增加一个int型形参，就是后置自增(自减)运算符函数**。
+
 ```cpp
 #include <iostream>
 
@@ -454,3 +457,138 @@ int main(){
 ```
 
 ![](/images/posts/C++/100.png)
+
+
+#### 重载流插入运算符和流提取运算符
+
+C++的流插入运算符“<<”和流提取运算符“>>”是C++在类库中提供的，所有C++编译系统都在类库中提供输入流类istream和输出流类ostream。**cin和cout分别是istream类和ostream类的对象。“<<”和“>>”相当于把后面对应的内容插入到流对象cin和cout中**，在类库提供的头文件中已经对“<<”和“>>”进行了重载，使之作为流插入运算符和流提取运算符，能用来输出和输入C++标准类型的数据。因此，在本书前面几章中，凡是用“cout<<”和“cin>>”对标准类型数据进行输入输出的，都要用#include <iostream>把头文件包含到本程序文件中。
+
+
+用户自己定义的类型的数据，是不能直接用“<<”和“>>”来输出和输入的。如果想用它们输出和输入自己声明的类型的数据，必须对它们重载。对“<<”和“>>”重载的函数形式如下：
+
+```cpp
+istream &operator>>(istream&,自定义类 &);
+ostream& operator<<(ostream&,自定义类 &);
+```
+
+即重载运算符“>>”的函数的第一个参数和函数的类型都必须是istream&类型，第二个参数是要进行输入操作的类。重载“<<”的函数的第一个参数和函数的类型都必须是ostream&类型，第二个参数是要进行输出操作的类。因此，只能将重载“>>”和“<<”的函数作为友元函数或普通的函数，而不能将它们定义为成员函数。
+
+##### 重载流插入运算符“<<”
+
+用重载的“<<”输出复数：
+
+```cpp
+#
+include <iostream>
+using namespace std;
+class Complex
+{public:
+	Complex( ){real=0;imag=0;}
+	Complex(double r,double i){real=r;imag=i;}
+	Complex operator + (Complex &c2);                //运算符“+”重载为成员函数
+	friend ostream &operator<<(ostream&,Complex&);   //运算符“<<”重载为友元函数
+private:
+	double real;
+	double imag;
+};
+
+Complex Complex::operator+(Complex &c2)              //定义运算符“+”重载函数
+{
+	return Complex(real+c2.real,imag+c2.imag);
+}
+
+ostream &operator<<(ostream& output,Complex& c)      //定义运算符“<<”重载函数
+{
+	output<<"("<<c.real<<"+"<<c.imag<<"i)"<<endl;
+	return output;
+}
+
+int main(){
+	Complex c1(2,4),c2(6,10),c3;
+	c3=c1+c2;
+	cout<<c3;
+	return 0;
+}
+```
+
+可以看到在对运算符“<<”重载后，在程序中用“<<”不仅能输出标准类型数据，而且可以输出用户自己定义的类对象。由于已将运算符“<<”的重载函数声明为Complex类的友元函数，编译系统把“cout<<c3”解释为：
+
+```cpp
+operator<<(cout,c3);
+```
+
+即以cout和c3作为实参，调用operator<<函数，调用函数时，形参output成为cout的引用，形参c成为c3的引用。因此调用函数的过程相当于执行：
+
+```cpp
+cout<<"("<<c3.real<<"+"<<c3.imag<<"i)"<<endl; 
+return cout;
+```
+
+上一行中的“<<”是C++预定义的流插入符，因为它右侧的操作数是字符串常量和double型数据。执行cout语句输出复数形式的信息。然后执行return语句。
+
+**请思考：return output的作用是什么？**
+
+回答：能连续向输出流插入信息。output是ostream类的对象，它是实参cout的引用，也就是cout通过传送地址给output，使它们共享同一段存储单元，或者说output是cout的别名。因此return output就是return cout，将输出流cout的现状返回，即保留输出流的现状。
+
+如：
+
+```cpp
+cout<<c3<<c2;
+```
+
+先处理cout<<c3，即：
+
+```cpp
+(cout<<c3)<<c2;
+```
+
+而执行(cout<<c3)得到的结果就是具有新内容的流对象cout，因此，(cout<<c3)<<c2相当于cout(新值)<<c2。**运算符“<<”左侧是ostream类对象cout，右侧是Complex类对象c2，则再次调用运算符“<<”重载函数，接着向输出流插入c2的数据。**
+
+C++规定运算符“<<”重载函数的第一个参数和函数的类型都必须是ostream类型的引用，就是为了返回cout的当前值以便连续输出。
+
+注意区分什么情况下的“<<”是标准类型数据的流插入符，什么情况下的“<<”是重载的流插入符。比如：
+
+```cpp
+cout<<c3<<5<<endl;
+```
+
+第一个是调用重载的流插入符，后面两个“<<”不是重载的流插入符，因为它的右侧不是Complex类对象而是标准类型的数据，是用预定义的流插入符处理的。
+
+##### 重载流提取运算符“>>”
+
+C++预定义的运算符“>>”的作用是从一个输入流中提取数据，如“cin>>i;”表示从输入流中提取一个整数赋给变量i(假设已定义i为int型)。重载流提取运算符的目的是希望将“>>”用于输入自定义类型的对象的信息。
+
+```cpp
+#include <iostream>
+using namespace std;
+class Complex
+{public:
+	friend ostream &operator<<(ostream &,Complex &);     //声明重载运算符“<<”
+	friend istreamb&operator>>(istream &,Complex &);     //声明重载运算符“>>”
+private:
+	double real;
+	double imag;
+};
+
+ostream &operator<<(ostream& output,Complex& c)          //定义重载运算符“<<”
+{
+	output<<"("<<c.real<<"+"<<c.imag<<"i)";
+	return output;
+}
+
+istream &operator>>(istream &input,Complex &c)           //定义重载运算符“>>”
+{
+	cout<<″input real part and imaginary part of complex number:″;
+	input>>c.real>>c.imag;
+	return input;
+}
+
+int main()
+{
+	Complex c1,c2;
+	cin>>c1>>c2;
+	cout<<"c1="<<c1<<endl;
+	cout<<"c2="<<c2<<endl;
+	return 0;
+}
+```
