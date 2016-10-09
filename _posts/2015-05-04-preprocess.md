@@ -146,3 +146,9 @@ int main(){
 #endif
 ```
 
+##### 7.用预处理指令#define声明一个常数，用以表明1年终有多少秒（忽略闰年问题）
+
+```cpp
+#define SECONDS_PER_YEAR (60*60*24*365)UL
+```
+
